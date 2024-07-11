@@ -1,5 +1,7 @@
 #include "accel_led.h"
 
+// This function lights up LEDs on the side of the board facing most toward the
+// ground (meant to somewhat mimic shifting liquid around inside a container)
 void light_LEDs() {
   accelerometer_data accel_data = Yboard.get_accelerometer();
   float x = accel_data.x;

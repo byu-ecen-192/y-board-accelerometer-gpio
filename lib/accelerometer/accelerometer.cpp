@@ -10,6 +10,8 @@ Adafruit_SSD1306 display(128, 64); // Create display
 
 //////////////////////// High-Level "main" Function ////////////////////////
 
+// This function calls other functions to perform each step of figuring out what
+// needs to be displayed every instant based on accelerometer data
 void updateScreen() {
   angle3_t theta = {ROT_X, ROT_Y, ROT_Z};
   point2_t v[NUM_VERTICES];
@@ -26,6 +28,8 @@ void updateScreen() {
 
 ///////////////////// Coordinate Management Functions //////////////////////
 
+// This function creates vertices for drawing the 3-dimensional graph off to the
+// right
 void setVertices(point3_t *r, int arrLen) {
   // Get info from accelerometer
   accelerometer_data accel_data = Yboard.get_accelerometer();
@@ -47,6 +51,8 @@ void setVertices(point3_t *r, int arrLen) {
   r[4] = {x, y, -z};
 }
 
+// This function creates the 3D axes that are drawn off to the right
+// Note: this is not drawing the acceleration magnitude vector - only the axes
 void setup_axes() {
   angle3_t theta = {ROT_X, ROT_Y, ROT_Z};
   setAxes(axes, NUM_AXES_VERTICES);
@@ -54,6 +60,7 @@ void setup_axes() {
   projTo2D(axes, ax2, NUM_AXES_VERTICES);
 }
 
+// This function creates vertices for drawing the axes
 void setAxes(point3_t *ax, int arrLen) {
   float x = AXES_LENGTH;
   float y = AXES_LENGTH;
@@ -68,6 +75,9 @@ void setAxes(point3_t *ax, int arrLen) {
   ax[6] = {0, 0, z};
 }
 
+// This function takes in a set of points (vertices) and applies a rotation
+// matrix to them so that, once projected into 2D space (the screen), the points
+// appear to have rotated. This is what makes the graph appear 3D.
 void rotate(angle3_t theta, point3_t *r, int arrLen) {
   float cx = cos(theta.x);
   float cy = cos(theta.y);
@@ -100,6 +110,9 @@ void rotate(angle3_t theta, point3_t *r, int arrLen) {
   }
 }
 
+// This function takes a set of points in 3D space and maps them into a 2D space
+// in such a way that the drawing resulting from such points still appears as if
+// it were 3D
 void projTo2D(point3_t *r, point2_t *v, int arrLen) {
   for (int i = 0; i < arrLen; i++) {
     v[i].x = FOCAL_LENGTH * r[i].x / (FOCAL_LENGTH + r[i].z);
@@ -109,6 +122,7 @@ void projTo2D(point3_t *r, point2_t *v, int arrLen) {
 
 //////////////////////////// Display Functions ////////////////////////////
 
+// This just runs initialization functions to get the screen ready to go
 void setup_display() {
   delay(1000); // Display needs time to initialize
   display.begin(SSD1306_SWITCHCAPVCC,
@@ -121,6 +135,8 @@ void setup_display() {
   display.display();
 }
 
+// This function draws the resultant acceleration vector (accounts for direction
+// and magnitude of the board's overall acceleration)
 void drawMagnitude(point2_t *v, int arrLen) {
   // Center the projection on-screen
   float x_zero = SCREEN_WIDTH * 3 / 4;
@@ -143,6 +159,7 @@ void drawMagnitude(point2_t *v, int arrLen) {
   // display.drawCircle((int)(x_zero + v[0].x), (int)(y_zero + v[0].y), 3, ON);
 }
 
+// This function draws the axes within which the magnitude vector will be drawn
 void drawAxes(point2_t *ax2, int arrLen) {
   // Center the projection on-screen
   float x_zero = SCREEN_WIDTH * 3 / 4;
@@ -171,6 +188,12 @@ void drawAxes(point2_t *ax2, int arrLen) {
   // ON);
 }
 
+// This function draws everything else on-screen:
+// 1. The title bar ("Accelerate!")
+// 2. X, Y, and Z listed vertically on the lefthand side of the screen
+// 3. Bars representing the magnitude (bar length) and direction (shaded vs.
+//    unshaded) of acceleration experienced in each of the coordinate
+//    directions: X, Y, and Z
 void drawInfo(point3_t *r, int arrLen) {
   uint8_t text_size = 2;
 
