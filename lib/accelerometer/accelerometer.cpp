@@ -6,24 +6,22 @@ point3_t r[NUM_VERTICES];
 point3_t axes[NUM_AXES_VERTICES];
 point2_t ax2[NUM_AXES_VERTICES];
 
-Adafruit_SSD1306 display(128, 64); // Create display
-
 //////////////////////// High-Level "main" Function ////////////////////////
 
 // This function calls other functions to perform each step of figuring out what
 // needs to be displayed every instant based on accelerometer data
-void updateScreen() {
+void defaultProgram() {
   angle3_t theta = {ROT_X, ROT_Y, ROT_Z};
   point2_t v[NUM_VERTICES];
 
-  display.clearDisplay();
+  // display.clearDisplay();
   setVertices(r, NUM_VERTICES);     // 1. Create 3D Vertices
   rotate(theta, r, NUM_VERTICES);   // 2. Rotate 3D Vertices
   projTo2D(r, v, NUM_VERTICES);     // 3. Project 3D Vertices Into 2D Space
   drawAxes(ax2, NUM_AXES_VERTICES); // 4. Draw Static Axes
   drawMagnitude(v, NUM_VERTICES);   // 5. Draw Magnitude Vectors
   drawInfo(r, NUM_VERTICES);        // 6. Display (x, y, z) Info
-  display.display();
+  // display.display();
 }
 
 ///////////////////// Coordinate Management Functions //////////////////////
