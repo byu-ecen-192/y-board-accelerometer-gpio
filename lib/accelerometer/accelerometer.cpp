@@ -6,6 +6,9 @@ point3_t r[NUM_VERTICES];
 point3_t axes[NUM_AXES_VERTICES];
 point2_t ax2[NUM_AXES_VERTICES];
 
+static Adafruit_SSD1306 display(128, 64); // Create display
+
+
 //////////////////////// High-Level "main" Function ////////////////////////
 
 // This function calls other functions to perform each step of figuring out what
@@ -129,7 +132,7 @@ void setup_display() {
   display.setTextColor(ON);
   display.setRotation(ZERO_DEG); // Can be 0, 90, 180, or 270
   display.setTextWrap(false);
-  display.dim(BRIGHTNESS_DAMPER);
+  // display.dim(BRIGHTNESS_DAMPER); // Causes some screens to fail
   display.display();
 }
 

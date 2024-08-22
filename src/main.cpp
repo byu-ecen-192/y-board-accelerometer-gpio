@@ -1,6 +1,6 @@
 #include "accel_led.h"
-#include "accelerometer.cpp"
 #include "accelerometer.h"
+#include "accelerometer.cpp"
 #include "yboard.h"
 #include <Arduino.h>
 
