@@ -93,10 +93,8 @@ typedef struct {
   float z;
 } angle3_t; // Measure in radians
 
-/////////////////////////////////////////////////////////////////////////////////////
-
 // Basically "main"
-void updateScreen();
+void defaultProgram();
 
 // Coordinate Management Functions
 void setVertices(point3_t *r, int arrLen);
