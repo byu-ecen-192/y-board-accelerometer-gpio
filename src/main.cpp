@@ -30,68 +30,46 @@ void setup() {
 void loop() {
   display.clearDisplay();
 
-  // This is the default accelerometer program I wrote for this lab.
-  // Everything for this function happens inside ../lib/accelerometer.cpp
+  /*********************************************************************/
+  /************************* PART 1 - ACCELEROMETER LAB PORTION **************************/
+  /*********************************************************************/
+
   defaultProgram();
 
-  // This is another function I wrote to light up the board's LEDs
-  // based on how the board is rotated in 3D space.
-  // Uncomment this line to give it a try!
   // light_LEDs();
 
-
   /*********************************************************************/
-  /************************* GPIO LAB PORTION **************************/
+  /************************* PART 2 - GPIO LAB PORTION **************************/
   /*********************************************************************/
 
   // Communication from the Y-board to external peripherals
-  // Goal: Build a basic circuit on the breadboard and then control it
-  // with the Y-board.
+  // Goal: Build a basic circuit on the breadboard and then control it with the Y-board.
   // blink_led();
 
   // Communication from external periperhals to the Y-board
   // onboard_led();
 
-  /*********************************************************************/
-  /************************* EXTRA TINKERING ***************************/
-  /*********************************************************************/
-  // Below are some functions for you to mess around with. Try changing the
-  // numbers in each function call to change how each shape is drawn or what
-  // letters are typed on the screen.
-
-  // Draw a line
-  // display.drawLine(2, 2, 37, 15, ON);
-
-  // Draw some shapes
-  // display.drawCircle(111, 52, 8, ON);
-  // display.fillTriangle(96, 60, 89, 27, 73, 26, ON);
-  // display.drawRect(104, 12, 16, 14, ON);
-  // display.drawRoundRect(12, 34, 30, 17, 5, ON);
-
-  // Write on the screen
-  // display.setTextSize(3);
-  // display.setCursor(0, 0);
-  // display.print("Word");
-
   display.display();
 }
 
-// blink_led
-// turn on LED while button 1 is active
+// blink_led() function
+// 1) Function is set up to turn on LED when button 1 is pressed. Set up circuit and run this.
+// 2) PLay around. Add some switches, buttons, and more LEDs. Find creative ways to light them 
 void blink_led() {
-  if (Yboard.get_button(1)) {
-    digitalWrite(PERIPHERAL_PIN, HIGH);  // turn the LED on (HIGH is the voltage level)
+  if (Yboard.get_button(1)) {  // the get_button analyzes the state of button 1. If it is pressed it report "TRUE" otherwise it will report "FALSE."
+    digitalWrite(PERIPHERAL_PIN, HIGH);  // this command will put voltage onto the PERIPHERAL_PIN, which we have defined as pin 15 (see line 7).
   } else {
-    digitalWrite(PERIPHERAL_PIN, LOW);   // turn the LED off by making the voltage LOW
+    digitalWrite(PERIPHERAL_PIN, LOW);   // This puts zero voltage onto the PERIPHERAL_PIN (pin 15).
   }
 }
 
-// onboard_led
+
+// onboard_led() function
 // Blink onboard LEDs depending on the state of the external button/switch
 void onboard_led() {
-  if (digitalRead(PERIPHERAL_PIN)){
-    Yboard.set_all_leds_color(255,0,0);
+  if (digitalRead(PERIPHERAL_PIN)){ // digitalRead keeps an eye on the PERIPHERAL_PIN (pin 15).
+    Yboard.set_all_leds_color(255,0,0); // If voltage is detected the PERIPHERAL_PIN, then all the Yborad LEDs will be set to red.
   } else {
-    Yboard.set_all_leds_color(0,0,0);
+    Yboard.set_all_leds_color(0,0,0); // If voltage is NOT detected the PERIPHERAL_PIN, then all the Yborad LEDs will be turned out.
   }
 }
