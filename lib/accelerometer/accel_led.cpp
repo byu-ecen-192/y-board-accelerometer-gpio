@@ -17,14 +17,14 @@ void light_LEDs() {
   float xi, yi, zi;
 
   for (int i = 1; i <= LED_COUNT; i++) {
-    if (3 < i && i < 11)
+    if (5 < i && i < 20)
       xi = xn;
     else
       xi = xp;
 
-    if (i == 7 || i == 17)
+    if (i == 13 || i == 30)
       yi = (yp > yn) ? (yp) : (yn);
-    else if (7 < i && i < 17)
+    else if (13 < i && i < 30)
       yi = yn;
     else
       yi = yp;

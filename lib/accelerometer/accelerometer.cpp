@@ -126,14 +126,12 @@ void projTo2D(point3_t *r, point2_t *v, int arrLen) {
 // This just runs initialization functions to get the screen ready to go
 void setup_display() {
   delay(1000); // Display needs time to initialize
-  display.begin(SSD1306_SWITCHCAPVCC,
-                0x3c); // Initialize display with I2C address: 0x3C
-  display.clearDisplay();
-  display.setTextColor(ON);
-  display.setRotation(ZERO_DEG); // Can be 0, 90, 180, or 270
-  display.setTextWrap(false);
+  Yboard.display.clearDisplay();
+  Yboard.display.setTextColor(ON);
+  Yboard.display.setRotation(90); // Can be 0, 90, 180, or 270
+  Yboard.display.setTextWrap(false);
   // display.dim(BRIGHTNESS_DAMPER); // Causes some screens to fail
-  display.display();
+  Yboard.display.display();
 }
 
 // This function draws the resultant acceleration vector (accounts for direction
@@ -152,9 +150,9 @@ void drawMagnitude(point2_t *v, int arrLen) {
   //                  (int)(x_zero + v[3].x), (int)(y_zero + v[3].y), ON);
 
   // Draw Summation Magnitude Vector
-  display.drawLine((int)(x_zero + v[0].x), (int)(y_zero + v[0].y),
+  Yboard.display.drawLine((int)(x_zero + v[0].x), (int)(y_zero + v[0].y),
                    (int)(x_zero + v[4].x), (int)(y_zero + v[4].y), ON);
-  display.fillCircle((int)(x_zero + v[4].x), (int)(y_zero + v[4].y), 1, ON);
+  Yboard.display.fillCircle((int)(x_zero + v[4].x), (int)(y_zero + v[4].y), 1, ON);
 
   // Debugging Mark -- Origin
   // display.drawCircle((int)(x_zero + v[0].x), (int)(y_zero + v[0].y), 3, ON);
@@ -167,21 +165,21 @@ void drawAxes(point2_t *ax2, int arrLen) {
   float y_zero = SCREEN_BODY_HEIGHT / 2 + SCREEN_TITLE_HEIGHT;
 
   // X-axis
-  display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
+  Yboard.display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
                    (int)(x_zero + ax2[1].x), (int)(y_zero + ax2[1].y), ON);
-  display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
+  Yboard.display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
                    (int)(x_zero + ax2[2].x), (int)(y_zero + ax2[2].y), ON);
 
   // Y-axis
-  display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
+  Yboard.display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
                    (int)(x_zero + ax2[3].x), (int)(y_zero + ax2[3].y), ON);
-  display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
+  Yboard.display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
                    (int)(x_zero + ax2[4].x), (int)(y_zero + ax2[4].y), ON);
 
   // Z-axis
-  display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
+  Yboard.display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
                    (int)(x_zero + ax2[5].x), (int)(y_zero + ax2[5].y), ON);
-  display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
+  Yboard.display.drawLine((int)(x_zero + ax2[0].x), (int)(y_zero + ax2[0].y),
                    (int)(x_zero + ax2[6].x), (int)(y_zero + ax2[6].y), ON);
 
   // Debugging Mark -- Origin
@@ -199,9 +197,9 @@ void drawInfo(point3_t *r, int arrLen) {
   uint8_t text_size = 2;
 
   // Draw Title
-  display.setCursor(0, 0);
-  display.setTextSize(text_size);
-  display.print("Accelerate!");
+  Yboard.display.setCursor(0, 0);
+  Yboard.display.setTextSize(text_size);
+  Yboard.display.write("Accelerate!");
 
   // Get Acceleration Info
   // (x, y, z, don't line up because I'm redefining their orientation on-screen)
@@ -212,23 +210,23 @@ void drawInfo(point3_t *r, int arrLen) {
   text_size = 1;
 
   // Draw Characters
-  display.drawChar(TEXT_X_POS, TEXT_Y_POS_X, 'x', ON, OFF, text_size);
-  display.drawChar(TEXT_X_POS, TEXT_Y_POS_Y, 'y', ON, OFF, text_size);
-  display.drawChar(TEXT_X_POS, TEXT_Y_POS_Z, 'z', ON, OFF, text_size);
+  Yboard.display.drawChar(TEXT_X_POS, TEXT_Y_POS_X, 'x', ON, OFF, text_size);
+  Yboard.display.drawChar(TEXT_X_POS, TEXT_Y_POS_Y, 'y', ON, OFF, text_size);
+  Yboard.display.drawChar(TEXT_X_POS, TEXT_Y_POS_Z, 'z', ON, OFF, text_size);
 
   // Draw Acceleration Bars
   if (x > 0) // x
-    display.fillRect(BAR_X_POS, BAR_Y_POS_X, x, TEXT_HEIGHT, ON);
+    Yboard.display.fillRect(BAR_X_POS, BAR_Y_POS_X, x, TEXT_HEIGHT, ON);
   else if (x < 0)
-    display.drawRect(BAR_X_POS, BAR_Y_POS_X, -x, TEXT_HEIGHT, ON);
+    Yboard.display.drawRect(BAR_X_POS, BAR_Y_POS_X, -x, TEXT_HEIGHT, ON);
 
   if (y > 0) // y
-    display.fillRect(BAR_X_POS, BAR_Y_POS_Y, y, TEXT_HEIGHT, ON);
+    Yboard.display.fillRect(BAR_X_POS, BAR_Y_POS_Y, y, TEXT_HEIGHT, ON);
   else if (y < 0)
-    display.drawRect(BAR_X_POS, BAR_Y_POS_Y, -y, TEXT_HEIGHT, ON);
+    Yboard.display.drawRect(BAR_X_POS, BAR_Y_POS_Y, -y, TEXT_HEIGHT, ON);
 
   if (z > 0) // z
-    display.fillRect(BAR_X_POS, BAR_Y_POS_Z, z, TEXT_HEIGHT, ON);
+    Yboard.display.fillRect(BAR_X_POS, BAR_Y_POS_Z, z, TEXT_HEIGHT, ON);
   else if (z < 0)
-    display.drawRect(BAR_X_POS, BAR_Y_POS_Z, -z, TEXT_HEIGHT, ON);
+    Yboard.display.drawRect(BAR_X_POS, BAR_Y_POS_Z, -z, TEXT_HEIGHT, ON);
 }

@@ -6,14 +6,14 @@
 #include "SparkFun_LIS2DH12.h"
 #include "yboard.h"
 #include <Adafruit_GFX.h>
-#include <Adafruit_NeoPixel.h>
+//#include <Adafruit_NeoPixel.h>
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
 
 /////////////////////////////////////////////////////////////////////////////////////
 
 // LEDs
-#define LED_COUNT 20
+#define LED_COUNT 35
 #define LED_PIN 5
 
 // Screen Constants
